@@ -1,5 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const unidades = require('./utils/unidades');
+const uniDez = require('./utils/uniDez');
+const dezenas = require('./utils/dezenas');
+const centenas = require('./utils/centenas');
+
 
 let app = express();
 
@@ -14,9 +19,60 @@ app.get('/', (req, res) =>{
 });
 
 app.get('/:num', (req, res) =>{
+
+  let vlr = req.params.num;
+  let vlrStr = String(vlr);
+  let vlrLeng = vlrStr.length;
+  let vlrSign = Math.sign(vlr);
+  let vlrPos = vlr*-1;
+  //let mil = 'mil';
+  let neg = 'menos';
+
   res.statusCode = 200;
   res.setHeader('content-type', 'application/json');
-  res.json({ num: req.params.num });
+
+  if(vlrLeng == 1) {
+        
+    let ext = unidades[vlr];
+    res.json({ extenso: ext });
+    
+  }
+
+  if(vlrLeng == 2) {
+
+    if(vlrSign == -1) {
+
+      let ext = neg+' '+unidades[vlrPos];
+      res.json({ extenso: ext });
+
+    } else {
+
+      if(vlr <20) {
+
+        let ext = uniDez[vlr-10];
+        res.json({ extenso: ext });
+
+      } else {
+        
+        let vlrSplit = vlr.split("");
+        
+        if(vlrSplit[1] == 0) {
+          
+          res.json({ extenso: dezenas[vlrSplit[0]] });
+          
+        } else {
+          
+          res.json({ extenso: dezenas[vlrSplit[0]]+' e '+unidades[vlrSplit[1]] });
+          
+        }
+      }
+    }
+  } 
+
+
+//  res.statusCode = 200;
+//  res.setHeader('content-type', 'application/json');
+//  res.json({ extenso: vlr });
 });
 
 app.listen(3000, () =>{
