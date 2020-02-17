@@ -17,27 +17,28 @@ module.exports =  {
     let vlrPos = vlr*-1;
     //let mil = 'mil';
     let neg = 'menos';
+    let extensoArr = [];
 
-    if(vlrLeng == 1) {
-          
-      let ext = unidades[vlr];
-      return res.json({ extenso: ext });
-      
-    }
+    function umAlg() {
+      let umExt = unidades[vlr];
+      extensoArr.push(umExt);
+      //return res.json({ extenso: ext });
+    } 
 
-    if(vlrLeng == 2) {
-
+    function doisAlg() {
       if(vlrSign == -1) {
 
-        let ext = neg+' '+unidades[vlrPos];
-        return res.json({ extenso: ext });
+        let negExt = neg+' '+unidades[vlrPos];
+        extensoArr.push(negExt);
+        //return res.json({ extenso: ext });
 
       } else {
 
         if(vlr <20) {
 
-          let ext = uniDez[vlr-10];
-          return res.json({ extenso: ext });
+          let dezExt = uniDez[vlr-10];
+          extensoArr.push(dezExt);
+          //return res.json({ extenso: ext });
 
         } else {
           
@@ -54,6 +55,27 @@ module.exports =  {
           }
         }
       }
+    }
+
+    function tresAlg() {
+
+    }
+
+    if(vlrLeng == 1) {
+
+      umAlg();
+      return res.json({ extenso: extensoArr[0]});
+
+    }
+
+    if(vlrLeng == 2) {
+
+      doisAlg();
+      return res.json({ extenso: extensoArr[0]})
     } 
+
+    if (vlrLeng == 3) {
+
+    }
   }
 }
