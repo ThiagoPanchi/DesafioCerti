@@ -3,9 +3,6 @@ const uniDez = require('../utils/uniDez');
 const dezenas = require('../utils/dezenas');
 const centenas = require('../utils/centenas');
 
-
-
-
 module.exports =  {
 
   async  transform(res, num) {
@@ -186,14 +183,11 @@ module.exports =  {
 
 
     if(vlrLeng == 1) {
-
       umAlg();
       return res.json({ extenso: extensoArr[0]});
-
     }
 
     if(vlrLeng == 2) {
-
       doisAlg();
       return res.json({ extenso: extensoArr[0]});
     } 
