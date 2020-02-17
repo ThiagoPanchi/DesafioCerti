@@ -20,15 +20,16 @@ module.exports =  {
     let extensoArr = await [];
 
     function negAlg(callback) {
-    
+      
+      vlr = vlrPos;
+      vlrSign = 1;
+
       if (vlrLeng == 2){
         
         extensoArr.push(neg+' '+unidades[vlrPos]);
         
       }
       if (vlrLeng == 3){
-        vlr = vlrPos;
-        vlrSign = 1;
         doisAlg();
         let negExt = neg+' '+extensoArr;
         extensoArr.pop(0);
@@ -36,13 +37,26 @@ module.exports =  {
       }
 
       if (vlrLeng == 4){
-        vlr = vlrPos;
-        vlrSign = 1;
         tresAlg();
         let negExt = neg+' '+extensoArr;
         extensoArr.pop(extensoArr);
         extensoArr.push(negExt);
       }
+
+      if (vlrLeng == 5){
+        quatroAlg();
+        let negExt = neg+' '+extensoArr;
+        extensoArr.pop(extensoArr);
+        extensoArr.push(negExt);
+      }
+
+      if (vlrLeng == 6){
+        cincoAlg();
+        let negExt = neg+' '+extensoArr;
+        extensoArr.pop(extensoArr);
+        extensoArr.push(negExt);
+      }
+
     }
 
     function umAlg() {
@@ -131,11 +145,44 @@ module.exports =  {
 
     function cincoAlg(){
       let vlrSplit = vlr.toString().split("");
+      
       if (vlrSign == -1) {
         negAlg();
-      } 
+      } else {
+        if (vlrSplit[1] == 0 && vlrSplit[2] == 0 && vlrSplit[3] == 0 && vlrSplit[4] == 0){
+          extensoArr.push(dezenas[vlrSplit[0]] +' '+ mil);
+        } else if(vlrSplit[2] == 0 && vlrSplit[3] == 0 && vlrSplit[4] == 0){
+          extensoArr.push(dezenas[vlrSplit[0]] +' e '+unidades[vlrSplit[1]]+' '+ mil);
+        } else if(vlrSplit[2] == 1 && vlrSplit[3] == 0 && vlrSplit[4] == 0){
+          extensoArr.push(dezenas[vlrSplit[0]] +' e '+unidades[vlrSplit[1]]+' '+ mil+' e cem');
+        } else if (vlrSplit[1] == 0){
+          vlr = vlrSplit[2]+vlrSplit[3]+vlrSplit[4];
+        
+          tresAlg();
+        
+          let cincAlg = dezenas[vlrSplit[0]]+' '+mil+' e '+extensoArr;
+          extensoArr.pop(extensoArr);
+          extensoArr.push(cincAlg);
+        } else {
+
+        vlr = vlrSplit[2]+vlrSplit[3]+vlrSplit[4];
+        
+        tresAlg();
+        
+        let cincAlg = dezenas[vlrSplit[0]]+' e '+ unidades[vlrSplit[1]]+' '+mil+' e '+extensoArr;
+        extensoArr.pop(extensoArr);
+        extensoArr.push(cincAlg);
+        }
+      }
     }
 
+    function seisAlg() {
+      if (vlrSign == -1) {
+        negAlg();
+      } else {
+        extensoArr.push('Valor fora do intervalo de -99999 e 99999 (menos noventa e nove mil novecentos e noventa e nove e noventa e nove mil novecentos e noventa e nove)');
+      }
+    }
 
 
     if(vlrLeng == 1) {
@@ -162,6 +209,13 @@ module.exports =  {
     if (vlrLeng == 5) {
       cincoAlg();
       return res.json({ extenso: extensoArr[0]});
+    }
+    if (vlrLeng == 6) {
+      seisAlg();
+      return res.json({ extenso: extensoArr[0]});
+    }
+    if (vlrLeng > 6) {
+      return res.json({ extenso: 'Valor fora do intervalo de -99999 e 99999 (menos noventa e nove mil novecentos e noventa e nove e noventa e nove mil novecentos e noventa e nove)' });
     }
   }
 }
