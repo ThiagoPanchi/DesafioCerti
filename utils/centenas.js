@@ -1,2 +1,2 @@
-module.exports = ['cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seissentos', 'oitocentos', 'novecentos'];
+module.exports = ['','cento', 'duzentos', 'trezentos', 'quatrocentos', 'quinhentos', 'seissentos','setecentos', 'oitocentos', 'novecentos'];
   

@@ -10,27 +10,51 @@ module.exports =  {
 
   async  transform(res, num) {
 
-    let vlr = num;
-    let vlrStr = String(vlr);
-    let vlrLeng = vlrStr.length;
-    let vlrSign = Math.sign(vlr);
-    let vlrPos = vlr*-1;
-    //let mil = 'mil';
-    let neg = 'menos';
-    let extensoArr = [];
+    let vlr = await num;
+    let vlrStr = await String(vlr);
+    let vlrLeng = await vlrStr.length;
+    let vlrSign = await Math.sign(vlr);
+    let vlrPos = await vlr*-1;
+    let mil = 'mil';
+    let neg = await 'menos';
+    let extensoArr = await [];
+
+    function negAlg(callback) {
+    
+      if (vlrLeng == 2){
+        
+        extensoArr.push(neg+' '+unidades[vlrPos]);
+        
+      }
+      if (vlrLeng == 3){
+        vlr = vlrPos;
+        vlrSign = 1;
+        doisAlg();
+        let negExt = neg+' '+extensoArr;
+        extensoArr.pop(0);
+        extensoArr.push(negExt);
+      }
+
+      if (vlrLeng == 4){
+        vlr = vlrPos;
+        vlrSign = 1;
+        tresAlg();
+        let negExt = neg+' '+extensoArr;
+        extensoArr.pop(extensoArr);
+        extensoArr.push(negExt);
+      }
+    }
 
     function umAlg() {
       let umExt = unidades[vlr];
       extensoArr.push(umExt);
-      //return res.json({ extenso: ext });
+      
     } 
 
     function doisAlg() {
       if(vlrSign == -1) {
 
-        let negExt = neg+' '+unidades[vlrPos];
-        extensoArr.push(negExt);
-        //return res.json({ extenso: ext });
+        negAlg();
 
       } else {
 
@@ -38,19 +62,19 @@ module.exports =  {
 
           let dezExt = uniDez[vlr-10];
           extensoArr.push(dezExt);
-          //return res.json({ extenso: ext });
-
+          
         } else {
           
-          let vlrSplit = vlr.split("");
+          let vlrSplit = vlr.toString().split("");
           
           if(vlrSplit[1] == 0) {
             
-            return res.json({ extenso: dezenas[vlrSplit[0]] });
+            extensoArr.push(dezenas[vlrSplit[0]]);
             
           } else {
             
-            return res.json({ extenso: dezenas[vlrSplit[0]]+' e '+unidades[vlrSplit[1]] });
+            let doisExt = dezenas[vlrSplit[0]]+' e '+unidades[vlrSplit[1]];
+            extensoArr.push(doisExt);
             
           }
         }
@@ -58,8 +82,61 @@ module.exports =  {
     }
 
     function tresAlg() {
+      if (vlrSign == -1){
+        negAlg();
+      } else {
+        if (vlr == 100) {
+          extensoArr.push('cem');
+        }
 
+        let vlrSplit = vlr.toString().split("");
+
+        if (vlrSplit[1] == 0 && vlrSplit[2] == 0) {
+
+          extensoArr.push(centenas[vlrSplit[0]]);
+        } else if (vlrSplit[2] == 0) {
+          
+          extensoArr.push(centenas[vlrSplit[0]]+' e '+dezenas[vlrSplit[1]]);
+        } else if (vlrSplit[1] == 0) {
+
+          extensoArr.push(centenas[vlrSplit[0]]+' e '+unidades[vlrSplit[2]])
+        } else {
+          
+          extensoArr.push(centenas[vlrSplit[0]]+' e '+dezenas[vlrSplit[1]]+' e '+unidades[vlrSplit[2]]);      
+        }
+      }
     }
+
+    function quatroAlg() {
+      let vlrSplit = vlr.toString().split("");
+      if (vlrSign == -1) {
+        negAlg();
+      } else {
+        if (vlr == 1000) {
+          extensoArr.push(mil);
+        } else if(vlrSplit[1] == 1 && vlrSplit[2] == 0 && vlrSplit[3] == 0) {
+          extensoArr.push(unidades[vlrSplit[0]]+' '+mil+' e cem');
+        } else if(vlrSplit[2] == 0 && vlrSplit[3] == 0) {
+          extensoArr.push(unidades[vlrSplit[0]]+' '+mil+' e '+centenas[vlrSplit[1]]);
+        } else {
+          
+          vlr = vlrSplit[1]+vlrSplit[2]+vlrSplit[3];
+          tresAlg();
+          let quatAlg = unidades[vlrSplit[0]]+' '+mil+' '+extensoArr;
+          extensoArr.pop(extensoArr);
+          extensoArr.push(quatAlg);
+        }
+      }
+    }
+
+    function cincoAlg(){
+      let vlrSplit = vlr.toString().split("");
+      if (vlrSign == -1) {
+        negAlg();
+      } 
+    }
+
+
 
     if(vlrLeng == 1) {
 
@@ -71,11 +148,20 @@ module.exports =  {
     if(vlrLeng == 2) {
 
       doisAlg();
-      return res.json({ extenso: extensoArr[0]})
+      return res.json({ extenso: extensoArr[0]});
     } 
 
     if (vlrLeng == 3) {
-
+      tresAlg();
+      return res.json({ extenso: extensoArr[0]});
+    }
+    if (vlrLeng == 4) {
+      quatroAlg();
+      return res.json({ extenso: extensoArr[0]});
+    }
+    if (vlrLeng == 5) {
+      cincoAlg();
+      return res.json({ extenso: extensoArr[0]});
     }
   }
 }
