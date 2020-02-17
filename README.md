@@ -4,7 +4,7 @@ A aplicação desenvolvida tem como objetivo receber um valor entre -99999 e 999
 
 <h2>O Sistema</h2>
 
-Foi desenvolvido a partir da linguagem JavaScript com o interpretador Node.Js crie um servidor HTTP que, para cada requisição GET, retorna um JSON cuja chave extenso seja a versão por extenso do número inteiro enviado no path. Os números podem estar no intervalo [-99999, 99999].
+Foi desenvolvido a partir da linguagem JavaScript com o interpretador Node.Js onde criou-se um servidor HTTP que, para cada requisição GET, retorna um JSON cuja chave extenso seja a versão por extenso do número inteiro enviado no path. Os números podem estar no intervalo [-99999, 99999].
 
 <h2>Requisitos</h2>
 
