@@ -21,6 +21,7 @@ app.get('/:num', (req, res) =>{
   let vlr = req.params.num;
   res.statusCode = 200;
   res.setHeader('content-type', 'application/json');
+  
   extenso.transform(res, vlr);
 
 });

@@ -181,35 +181,44 @@ module.exports =  {
       }
     }
 
-
-    if(vlrLeng == 1) {
-      umAlg();
-      return res.json({ extenso: extensoArr[0]});
+    function isNum(vlr) {
+      return !isNaN(parseFloat(vlr)) && isFinite(vlr);
     }
 
-    if(vlrLeng == 2) {
-      doisAlg();
-      return res.json({ extenso: extensoArr[0]});
-    } 
+    if (isNaN(vlr)) {
+      return res.json({ extenso: 'Valor não é um número válido. inserir um valor dentro do intervalo -99999 e 99999 (menos noventa e nove mil novecentos e noventa e nove e noventa e nove mil novecentos e noventa e nove)' });
+    } else {
+      if(vlrLeng == 1) {
+        umAlg();
+        return res.json({ extenso: extensoArr[0]});
+      }
+  
+      if(vlrLeng == 2) {
+        doisAlg();
+        return res.json({ extenso: extensoArr[0]});
+      } 
+  
+      if (vlrLeng == 3) {
+        tresAlg();
+        return res.json({ extenso: extensoArr[0]});
+      }
+      if (vlrLeng == 4) {
+        quatroAlg();
+        return res.json({ extenso: extensoArr[0]});
+      }
+      if (vlrLeng == 5) {
+        cincoAlg();
+        return res.json({ extenso: extensoArr[0]});
+      }
+      if (vlrLeng == 6) {
+        seisAlg();
+        return res.json({ extenso: extensoArr[0]});
+      }
+      if (vlrLeng > 6) {
+        return res.json({ extenso: 'Valor fora do intervalo de -99999 e 99999 (menos noventa e nove mil novecentos e noventa e nove e noventa e nove mil novecentos e noventa e nove)' });
+      }
+    }
 
-    if (vlrLeng == 3) {
-      tresAlg();
-      return res.json({ extenso: extensoArr[0]});
-    }
-    if (vlrLeng == 4) {
-      quatroAlg();
-      return res.json({ extenso: extensoArr[0]});
-    }
-    if (vlrLeng == 5) {
-      cincoAlg();
-      return res.json({ extenso: extensoArr[0]});
-    }
-    if (vlrLeng == 6) {
-      seisAlg();
-      return res.json({ extenso: extensoArr[0]});
-    }
-    if (vlrLeng > 6) {
-      return res.json({ extenso: 'Valor fora do intervalo de -99999 e 99999 (menos noventa e nove mil novecentos e noventa e nove e noventa e nove mil novecentos e noventa e nove)' });
-    }
+    
   }
 }
