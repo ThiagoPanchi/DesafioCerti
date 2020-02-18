@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const extenso = require('./controllers/extenso');
 
-
+const PORT = 3000;
+const HOST = '0.0.0.0';
 
 let app = express();
 
@@ -26,6 +27,6 @@ app.get('/:num', (req, res) =>{
 
 });
 
-app.listen(3000, () =>{
+app.listen(PORT, HOST, () =>{
   console.log('Servidor rodando!');
 });
